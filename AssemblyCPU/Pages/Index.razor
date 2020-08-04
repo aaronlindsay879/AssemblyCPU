@@ -45,7 +45,7 @@
     </table>
 
     <textarea id="code" class="border-black border-2" style="width: 100%; height: 600px;"
-                @bind-value="Content" @bind-value:event="oninput" spellcheck="false"></textarea>
+              @bind-value="Content" @bind-value:event="oninput" spellcheck="false" />
 </div>
 
 
@@ -62,7 +62,7 @@
 </div>
 
 @code  {
-    CPU cpu;
+        CPU cpu;
     public string Content { get; set; }
 
     private float _speed { get; set; }
@@ -80,10 +80,19 @@
         base.OnInitialized();
 
         RunText = "Run";
-        _speed = 1;
+        _speed = 5;
         cpu = new CPU(8, 100);
 
-        Content = "";
+        Content = "MOV R0,#0b10101\n" +
+                  "MOV R1,#0x1C\n" +
+                  "MOV R2,#10\n" +
+                  "LSL R3,R0,#2\n\n" +
+                  "CMP R0,R1\n" +
+                  "BNE notEqual\n" +
+                  "STR R2,90\n" +
+                  "HALT\n\n" +
+                  "notEqual: STR R3,90\n" +
+                  "HALT";
 
         _timer = new System.Timers.Timer((int)(1000 / _speed));
         _timer.Elapsed += (s, e) => {

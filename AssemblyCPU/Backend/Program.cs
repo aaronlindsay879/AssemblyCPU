@@ -42,7 +42,7 @@ namespace AssemblyCPU.Backend
                         break;
 
                     case OperandType.Value:
-                        if (part[2] != 'b')
+                        if (part.Length < 3 || part[2] != 'b')
                             num = (int)new Int32Converter().ConvertFromString(part.Remove(0, 1));
                         else
                             num = Convert.ToInt32(part.Remove(0, 3), 2);
