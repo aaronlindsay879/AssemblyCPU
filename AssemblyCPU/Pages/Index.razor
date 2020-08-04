@@ -69,7 +69,7 @@
 </div>
 
 @code  {
-        CPU cpu;
+    CPU cpu;
     public string Content { get; set; }
 
     private float _speed { get; set; }
@@ -85,11 +85,11 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
-        RunText = "Run";
-        _speed = 5;
         cpu = new CPU(8, 100);
 
+        //Set default values
+        RunText = "Run";
+        _speed = 5;
         Content = "MOV R0,#0b10101\n" +
                   "MOV R1,#0x1C\n" +
                   "MOV R2,#10\n" +
@@ -101,6 +101,7 @@
                   "notEqual: STR R3,90\n" +
                   "HALT";
 
+        //Create timer for running cpu instructions
         _timer = new System.Timers.Timer((int)(1000 / _speed));
         _timer.Elapsed += (s, e) => {
             cpu.Pulse();

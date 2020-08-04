@@ -38,11 +38,6 @@
 
     public string RadioValue = "hex";
 
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-    }
-
     public int GetId(int row, int col)
     {
         return (row * Cols) + col;
@@ -50,6 +45,7 @@
 
     public string GetValue(int row, int col)
     {
+        //Find id and calculate base based upon selected value
         int id = GetId(row, col);
         int b = RadioValue switch
         {
@@ -59,16 +55,20 @@
             _ => 10
         };
 
+        //Convert the value into the wanted base
         string value = Convert.ToString(Data.GetData(id), b);
 
         string output = "";
         if (b != 10 && value != "0")
         {
+            //Find the chunk size such that 1 chunk represents 256 states (such as 2 hex chars)
             int chunkSize = (int)Math.Log(256, b);
-            int padAmount = (int)(chunkSize * Math.Ceiling(value.Length / (float)chunkSize));
 
+            //Calculate the length needed to get to next multiple of chunkSize, and pad to that size
+            int padAmount = (int)(chunkSize * Math.Ceiling(value.Length / (float)chunkSize));
             value = value.PadLeft(padAmount, '0');
 
+            //Select chunks in the given size, interlace with spaces
             for (int i = 0; i <= value.Length - chunkSize; i += chunkSize)
                 output += value.Substring(i, chunkSize) + " ";
         }
