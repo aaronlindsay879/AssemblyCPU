@@ -1,0 +1,84 @@
+﻿@using Backend 
+
+<center>
+    <h3>@Name</h3>
+
+    <table class="table-auto" style="width:100%">
+        @for (int row = 0; row < Rows; row++)
+        {
+            <tr>
+                @for (int col = 0; col < Cols; col++)
+                {
+                    <td class="border px-2 py-1">
+                        <center>
+                            <b>@GetName(row, col)</b>
+                            <p>@GetValue(row, col)</p>
+                        </center>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+
+    @foreach (var item in new string[] { "binary", "decimal", "hex" })
+    {
+        <div>
+            <input type="radio" name="@Name" id="@(Name)-@(item)" value="@item" @onchange="RadioSelection" checked=@(RadioValue.Equals(item,StringComparison.OrdinalIgnoreCase)) />
+            <label for="@(Name)-@(item)">@item</label>
+        </div>
+    }
+</center>
+
+@code {
+    [Parameter] public string Name { get; set; }
+    [Parameter] public Dictionary<string, Backend.SpecialStorage> Registers { get; set; }
+
+    [Parameter] public int Rows { get; set; }
+    [Parameter] public int Cols { get; set; }
+
+    public string RadioValue = "decimal";
+
+    public string GetName(int row, int col)
+    {
+        return Registers.Keys.ToArray()[(row * Cols) + col];
+    }
+
+    public string GetValue(int row, int col)
+    {
+        string name = GetName(row, col);
+        int b = RadioValue switch
+        {
+            "binary" => 2,
+            "decimal" => 10,
+            "hex" => 16,
+            _ => 10
+        };
+
+        string value = Convert.ToString(Registers[name].Data, b);
+
+        string output = "";
+        if (b != 10 && value != "0")
+        {
+            int chunkSize = (int)Math.Log(256, b);
+            int padAmount = value.Length + chunkSize - (value.Length % chunkSize);
+
+            value = value.PadLeft(padAmount, '0');
+
+            //Console.WriteLine($"value length: {value.Length}; chunk size: {chunkSize}");
+
+            for (int i = 0; i <= value.Length - chunkSize; i += chunkSize)
+                output += value.Substring(i, chunkSize) + " ";
+        }
+        else
+        {
+            output = value;
+        }
+
+        return output.ToUpper();
+    }
+
+    void RadioSelection(ChangeEventArgs args)
+    {
+        RadioValue = args.Value.ToString();
+    }
+}
