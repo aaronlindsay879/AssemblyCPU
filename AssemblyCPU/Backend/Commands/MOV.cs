@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AssemblyCPU.Backend.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AssemblyCPU.Backend 
-{ 
+namespace AssemblyCPU.Backend
+{
     public partial class Command
     {
         private void MOV(Instance instance)

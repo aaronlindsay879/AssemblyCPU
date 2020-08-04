@@ -5,13 +5,6 @@ using System.Threading.Tasks;
 
 namespace AssemblyCPU.Backend
 {
-    public enum OperandType
-    {
-        Register,
-        Memory,
-        Value
-    }
-
     public class Operand
     {
         private int _value;
