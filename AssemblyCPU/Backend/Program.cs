@@ -1,9 +1,7 @@
 ﻿using AssemblyCPU.Backend.Data;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AssemblyCPU.Backend
 {
@@ -37,7 +35,7 @@ namespace AssemblyCPU.Backend
             Operand[] output = new Operand[parts.Length];
 
             //For each operand part (with index)
-            foreach(var (part, index) in parts.Select((x, i) => (x, i)))
+            foreach (var (part, index) in parts.Select((x, i) => (x, i)))
             {
                 int num;
 
@@ -88,7 +86,7 @@ namespace AssemblyCPU.Backend
                 string[] splitLine = line.Split(':');
                 labels[index] = (splitLine.Length == 1) ? null : splitLine[0];
             }
-                
+
             //For each line of code (with index)
             foreach (var (line, index) in lines.Select((x, i) => (x, i)))
             {
@@ -115,7 +113,7 @@ namespace AssemblyCPU.Backend
                 //Create default value for operands and addressing mode
                 Operand[] operands = new Operand[0];
                 Addressing addressing = Addressing.Direct;
-                
+
                 switch (Operations.GetCategory((Operation)operation))
                 {
                     case "Memory":

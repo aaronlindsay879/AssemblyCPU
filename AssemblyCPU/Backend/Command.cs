@@ -1,7 +1,6 @@
 ﻿using AssemblyCPU.Backend.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AssemblyCPU.Backend
 {

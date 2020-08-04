@@ -1,17 +1,11 @@
-﻿using AssemblyCPU.Backend.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AssemblyCPU.Backend
+﻿namespace AssemblyCPU.Backend
 {
     public partial class Command
     {
         private void LSL(Instance instance)
         {
             Constrainer.EnsureOperandCount(_operands, 3);
-            
+
             //Fetches values
             long valueOne = instance.GeneralReg["Registers"].GetData(_operands[1].Value);
             long valueTwo = FetchValue(_operands[2], instance);

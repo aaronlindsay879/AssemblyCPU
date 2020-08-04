@@ -1,9 +1,6 @@
 ﻿using AssemblyCPU.Backend.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AssemblyCPU.Backend
 {
@@ -62,7 +59,8 @@ namespace AssemblyCPU.Backend
             if (_instance.Halted)
                 return;
 
-            switch (_stage) {
+            switch (_stage)
+            {
                 //Copy PC value to MAR
                 case 1:
                     _instance.SpecialReg["MAR"].Data = _instance.SpecialReg["PC"].Data;
