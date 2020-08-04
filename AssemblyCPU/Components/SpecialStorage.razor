@@ -9,7 +9,7 @@
             <tr>
                 @for (int col = 0; col < Cols; col++)
                 {
-                    <td class="border px-2 py-1">
+                    <td class="border px-2 py-1" title="@GetTooltip(row, col)">
                         <center>
                             <b>@GetName(row, col)</b>
                             <p>@GetValue(row, col)</p>
@@ -37,6 +37,13 @@
     [Parameter] public int Cols { get; set; }
 
     public string RadioValue = "binary";
+
+    public string GetTooltip(int row, int col)
+    {
+        string name = GetName(row, col);
+
+        return Registers[name].Tooltip;
+    }
 
     public string GetName(int row, int col)
     {

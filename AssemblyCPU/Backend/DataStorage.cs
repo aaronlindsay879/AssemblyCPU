@@ -37,6 +37,14 @@ namespace AssemblyCPU.Backend
     public class SpecialStorage
     {
         private long _data;
+        private string _tooltip;
+
         public long Data { get => _data; set => _data = value; }
+        public string Tooltip { get => _tooltip; }
+
+        public SpecialStorage(string tooltip)
+        {
+            _tooltip = tooltip;
+        }
     }
 }

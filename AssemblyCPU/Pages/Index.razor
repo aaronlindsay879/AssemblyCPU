@@ -6,40 +6,47 @@
     <table class="table-auto">
         <tr>
             <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Compile">Compile</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Compile"
+                        title="Compile the program into memory">Compile</button>
             </td>
             <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Pulse">Pulse</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Pulse"
+                        title="Executes one CPU state">Pulse</button>
             </td>
             <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Cycle">Cycle</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Cycle"
+                        title="Executes a full command">Cycle</button>
             </td>
             <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="RunToggle">@RunText</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="RunToggle"
+                        title="Run the program">@RunText</button>
             </td>
             <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Reset">Reset</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Reset"
+                        title="Clear all memory and registers">Reset</button>
             </td>
         </tr>
         <tr>
             <td colspan="5">
-                <span>Current instruction (MAR): @cpu.Instance.SpecialReg["MAR"].Data</span>
+                <span title="The current instruction being worked upon">Current instruction (MAR): @cpu.Instance.SpecialReg["MAR"].Data</span>
             </td>
         </tr>
         <tr>
             <td colspan="5">
-                <span>Next state: @cpu.State</span>
+                <span title="The next CPU state to be worked upon">Next state: @cpu.State</span>
             </td>
         </tr>
         <tr>
             <td colspan="5">
-                <span>Is halted: @cpu.Instance.Halted</span>
+                <span title="Whether the CPU has is in a halted state, where it will no longer execute instructions">Is halted: @cpu.Instance.Halted</span>
             </td>
         </tr>
         <tr>
             <td colspan="5">
-                <span>Speed: </span>
-                <input type="number" step="1" min="1" max="10" style="width: 10%;" @bind-value="Speed" @bind-value:event="onchange" />
+                <div title="The speed at which to run programs" style="display: inline">
+                    <span>Speed: </span>
+                    <input type="number" step="1" min="1" max="10" style="width: 10%;" @bind-value="Speed" @bind-value:event="onchange" />
+                </div>
             </td>
         </tr>
     </table>
