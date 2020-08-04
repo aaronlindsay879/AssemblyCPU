@@ -67,7 +67,7 @@
         if (b != 10 && value != "0")
         {
             int chunkSize = (int)Math.Log(256, b);
-            int padAmount = value.Length + chunkSize - (value.Length % chunkSize);
+            int padAmount = (int)(chunkSize * Math.Ceiling(value.Length / (float)chunkSize));
 
             value = value.PadLeft(padAmount, '0');
 
