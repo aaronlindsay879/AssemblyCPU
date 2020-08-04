@@ -43,23 +43,32 @@ namespace AssemblyCPU.Backend
             //Creates map of operations and functions
             var map = new Dictionary<Operation, OperationAction<Instance>>();
 
+            //memory operations
             map[Operation.LDR] = LDR;
             map[Operation.STR] = STR;
+
+            //arithmetic operations
             map[Operation.ADD] = ADD;
             map[Operation.SUB] = SUB;
             map[Operation.MOV] = MOV;
             map[Operation.CMP] = CMP;
+
+            //branch operations
             map[Operation.B] = B;
             map[Operation.BEQ] = BEQ;
             map[Operation.BNE] = BNE;
             map[Operation.BGT] = BGT;
             map[Operation.BLT] = BLT;
+
+            //bitwise operations
             map[Operation.AND] = AND;
             map[Operation.ORR] = ORR;
             map[Operation.EOR] = EOR;
             map[Operation.MVN] = MVN;
             map[Operation.LSL] = LSL;
             map[Operation.LSR] = LSR;
+
+            //other operations
             map[Operation.HALT] = HALT;
 
             return map;
