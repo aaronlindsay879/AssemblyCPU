@@ -28,6 +28,16 @@ namespace AssemblyCPU.Backend
             _map = GenerateMap();
         }
 
+        private long FetchValue(Operand operand, Instance instance)
+        {
+            return _opcode.Addressing switch
+            {
+                Addressing.Immediate => operand.Value,
+                Addressing.Direct => instance.GeneralReg["Registers"].GetData(operand.Value),
+                _ => throw new NotImplementedException()
+            };
+        }
+
         private Dictionary<Operation, OperationAction<Instance>> GenerateMap()
         {
             var map = new Dictionary<Operation, OperationAction<Instance>>();

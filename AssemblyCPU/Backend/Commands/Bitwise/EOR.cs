@@ -8,20 +8,18 @@ namespace AssemblyCPU.Backend
 {
     public partial class Command
     {
-        private void ADD(Instance instance)
+        private void EOR(Instance instance)
         {
             Constrainer.EnsureOperandCount(_operands, 3);
 
+            //Fetches values
             long valueOne = instance.GeneralReg["Registers"].GetData(_operands[1].Value);
-            long valueTwo = _opcode.Addressing switch
-            {
-                Addressing.Immediate => _operands[2].Value,
-                Addressing.Direct => instance.GeneralReg["Registers"].GetData(_operands[2].Value),
-                _ => throw new NotImplementedException()
-            };
+            long valueTwo = FetchValue(_operands[2], instance);
 
-            long value = valueOne + valueTwo;
+            //Computes bitwise XOR of values
+            long value = valueOne ^ valueTwo;
 
+            //Sets register to computed value
             instance.GeneralReg["Registers"].SetData(value, _operands[0].Value);
         }
     }

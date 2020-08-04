@@ -8,20 +8,18 @@ namespace AssemblyCPU.Backend
 {
     public partial class Command
     {
-        private void LSL(Instance instance)
+        private void SUB(Instance instance)
         {
             Constrainer.EnsureOperandCount(_operands, 3);
 
+            //Fetch values
             long valueOne = instance.GeneralReg["Registers"].GetData(_operands[1].Value);
-            long valueTwo = _opcode.Addressing switch
-            {
-                Addressing.Immediate => _operands[2].Value,
-                Addressing.Direct => instance.GeneralReg["Registers"].GetData(_operands[2].Value),
-                _ => throw new NotImplementedException()
-            };
+            long valueTwo = FetchValue(_operands[2], instance);
 
-            long value = (int)valueOne << (int)valueTwo;
+            //Subtract values from each otehr
+            long value = valueOne - valueTwo;
 
+            //Set register to computed value
             instance.GeneralReg["Registers"].SetData(value, _operands[0].Value);
         }
     }

@@ -12,13 +12,10 @@ namespace AssemblyCPU.Backend
         {
             Constrainer.EnsureOperandCount(_operands, 2);
 
-            long value = _opcode.Addressing switch
-            {
-                Addressing.Immediate => _operands[1].Value,
-                Addressing.Direct => instance.GeneralReg["Registers"].GetData(_operands[1].Value),
-                _ => throw new NotImplementedException()
-            };
+            //Fetch value
+            long value = FetchValue(_operands[1], instance);
 
+            //Set register to value
             instance.GeneralReg["Registers"].SetData(value, _operands[0].Value);
         }
     }
