@@ -19,6 +19,7 @@ namespace AssemblyCPU.Backend
         {
             get
             {
+                //Returns a state depending on the current stage of the CPU
                 if (_stage >= 1 && _stage <= 3)
                     return State.Fetch;
 
@@ -38,15 +39,18 @@ namespace AssemblyCPU.Backend
 
         public void RegenerateInstance()
         {
+            //Find out number of registers and ram slots
             int numRegisters = _instance.GeneralReg["Registers"].GetLength();
             int numRam = _instance.GeneralReg["RAM"].GetLength();
 
+            //Resets stage and instance
             _stage = 1;
             _instance = new Instance(numRegisters, numRam);
         }
 
         private void IncrementStage()
         {
+            //Increments stage, resets to 1 if needed
             _stage++;
 
             if (_stage > 5) _stage = 1;
@@ -54,6 +58,7 @@ namespace AssemblyCPU.Backend
 
         public void Pulse()
         {
+            //Do nothing if CPU halted
             if (_instance.Halted)
                 return;
 
@@ -87,6 +92,7 @@ namespace AssemblyCPU.Backend
                     //Convert instruction to hex string
                     string str = Convert.ToString(instruction, 16);
 
+                    //If command is blank, indicate that and stop
                     if (str == "0")
                     {
                         _command.IsEmpty = true;
@@ -121,23 +127,11 @@ namespace AssemblyCPU.Backend
 
         public void Cycle()
         {
+            //Run until stage resets to start
             do
             {
                 Pulse();
             } while (_stage != 1);
-        }
-
-        public void Run(float speed, CancellationToken token)
-        {
-            token.ThrowIfCancellationRequested();
-
-            do
-            {
-                Pulse();
-                Thread.Sleep((int)(1000 / speed));
-            } while (!token.IsCancellationRequested);
-
-            token.ThrowIfCancellationRequested();
         }
     }
 }

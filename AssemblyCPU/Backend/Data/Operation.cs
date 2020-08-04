@@ -24,10 +24,12 @@ namespace AssemblyCPU.Backend.Data
         [Category("Bitwise")] LSR,
         [Category("Other")] HALT
     }
+
     public static class Operations
     {
         public static string GetCategory(this Operation source)
         {
+            //Creates an extension method in order to split Operation enum into groups
             FieldInfo fieldInfo = source.GetType().GetField(source.ToString());
             CategoryAttribute attribute = (CategoryAttribute)fieldInfo.GetCustomAttribute(typeof(CategoryAttribute), false);
 

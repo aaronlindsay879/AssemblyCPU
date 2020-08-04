@@ -30,6 +30,7 @@ namespace AssemblyCPU.Backend
 
         private long FetchValue(Operand operand, Instance instance)
         {
+            //Either take the value literally or fetch from register, depending on the addressing mode specified in opcode
             return _opcode.Addressing switch
             {
                 Addressing.Immediate => operand.Value,
@@ -40,6 +41,7 @@ namespace AssemblyCPU.Backend
 
         private Dictionary<Operation, OperationAction<Instance>> GenerateMap()
         {
+            //Creates map of operations and functions
             var map = new Dictionary<Operation, OperationAction<Instance>>();
 
             map[Operation.LDR] = LDR;
@@ -64,34 +66,30 @@ namespace AssemblyCPU.Backend
             return map;
         }
 
-        private int IntLengthInBinary(int value)
-        {
-            return Convert.ToString(value, 2).Length;
-        }
-
         public long ToValue()
         {
-            string output = "";
-            output += Convert.ToString(_opcode.ToInt(), 16).PadLeft(2, '0');
+            //Converts the opcode to a hex string, and pad to 2 chars
+            string output = Convert.ToString(_opcode.ToInt(), 16).PadLeft(2, '0');
 
+            //For each operand, convert to a hex string while ensuring 2 chars long
             foreach (Operand operand in _operands)
             {
                 string partial = Convert.ToString(operand.ToInt(), 16);
                 if (partial.Length > 2)
                     partial = partial.Substring(0, 2);
 
+                //Add operand hex string to output string
                 output += partial.PadLeft(2, '0');
             }
 
+            //Convert final hex string to long
             return Convert.ToInt64(output, 16);
         }
 
         public void Execute(Instance instance)
         {
-
-            Console.WriteLine(_opcode.Operation);
+            //Invokes the function linked to a given operation
             _map[_opcode.Operation].Invoke(instance);
-            return;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace AssemblyCPU.Backend
 
         public bool SetData(long value, int pos)
         {
+            //Only allow data to be set if position is in bounds
             if (pos < 0 || pos > data.Length)
                 return false;
 
