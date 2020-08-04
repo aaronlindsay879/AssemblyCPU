@@ -1,30 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace AssemblyCPU.Backend
 {
-    public enum Operations
+    public enum Operation
     {
-        LDR = 1, 
-        STR,
-        ADD,
-        SUB,
-        MOV,
-        CMP,
-        B,
-        BEQ,
-        BNE,
-        BGT,
-        BLT,
-        AND,
-        ORR,
-        EOR,
-        MVN,
-        LSL,
-        LSR,
-        HALT
+        [Category("Memory")] LDR = 1,
+        [Category("Memory")] STR,
+        [Category("Arithmetic")] ADD,
+        [Category("Arithmetic")] SUB,
+        [Category("Arithmetic")] MOV,
+        [Category("Arithmetic")] CMP,
+        [Category("Branch")] B,
+        [Category("Branch")] BEQ,
+        [Category("Branch")] BNE,
+        [Category("Branch")] BGT,
+        [Category("Branch")] BLT,
+        [Category("Bitwise")] AND,
+        [Category("Bitwise")] ORR,
+        [Category("Bitwise")] EOR,
+        [Category("Bitwise")] MVN,
+        [Category("Bitwise")] LSL,
+        [Category("Bitwise")] LSR,
+        [Category("Other")] HALT
+    }
+
+    public static class Operations
+    {
+        public static string GetCategory(this Operation source)
+        {
+            FieldInfo fieldInfo = source.GetType().GetField(source.ToString());
+            CategoryAttribute attribute = (CategoryAttribute)fieldInfo.GetCustomAttribute(typeof(CategoryAttribute), false);
+
+            return attribute.Category;
+        }
     }
 
     public enum Addressing
@@ -35,13 +48,13 @@ namespace AssemblyCPU.Backend
 
     public class Opcode
     {
-        private Operations _operation;
+        private Operation _operation;
         private Addressing _addressing;
 
-        public Operations Operation { get => _operation; }
+        public Operation Operation { get => _operation; }
         public Addressing Addressing { get => _addressing; }
 
-        public Opcode(Operations operation, Addressing addressing)
+        public Opcode(Operation operation, Addressing addressing)
         {
             _operation = operation;
             _addressing = addressing;
@@ -50,7 +63,7 @@ namespace AssemblyCPU.Backend
         public Opcode(int opcode)
         {
             //Use bit masks to find relevant bits
-            _operation = (Operations)((opcode & 0b11111110) >> 1);
+            _operation = (Operation)((opcode & 0b11111110) >> 1);
             Console.WriteLine($"operation: {opcode & 0b11111110}");
             _addressing = (Addressing)(opcode & 0b1);
         }

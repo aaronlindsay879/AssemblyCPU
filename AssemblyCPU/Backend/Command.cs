@@ -10,7 +10,7 @@ namespace AssemblyCPU.Backend
     {
         private Opcode _opcode;
         private Operand[] _operands;
-        private Dictionary<Operations, OperationAction<Instance>> _map;
+        private Dictionary<Operation, OperationAction<Instance>> _map;
 
         public bool IsEmpty;
 
@@ -27,28 +27,28 @@ namespace AssemblyCPU.Backend
             _map = GenerateMap();
         }
 
-        private Dictionary<Operations, OperationAction<Instance>> GenerateMap()
+        private Dictionary<Operation, OperationAction<Instance>> GenerateMap()
         {
-            var map = new Dictionary<Operations, OperationAction<Instance>>();
+            var map = new Dictionary<Operation, OperationAction<Instance>>();
 
-            map[Operations.LDR] = LDR;
-            map[Operations.STR] = STR;
-            map[Operations.ADD] = ADD;
-            map[Operations.SUB] = SUB;
-            map[Operations.MOV] = MOV;
-            map[Operations.CMP] = CMP;
-            map[Operations.B] = B;
-            map[Operations.BEQ] = BEQ;
-            map[Operations.BNE] = BNE;
-            map[Operations.BGT] = BGT;
-            map[Operations.BLT] = BLT;
-            map[Operations.AND] = AND;
-            map[Operations.ORR] = ORR;
-            map[Operations.EOR] = EOR;
-            map[Operations.MVN] = MVN;
-            map[Operations.LSL] = LSL;
-            map[Operations.LSR] = LSR;
-            map[Operations.HALT] = HALT;
+            map[Operation.LDR] = LDR;
+            map[Operation.STR] = STR;
+            map[Operation.ADD] = ADD;
+            map[Operation.SUB] = SUB;
+            map[Operation.MOV] = MOV;
+            map[Operation.CMP] = CMP;
+            map[Operation.B] = B;
+            map[Operation.BEQ] = BEQ;
+            map[Operation.BNE] = BNE;
+            map[Operation.BGT] = BGT;
+            map[Operation.BLT] = BLT;
+            map[Operation.AND] = AND;
+            map[Operation.ORR] = ORR;
+            map[Operation.EOR] = EOR;
+            map[Operation.MVN] = MVN;
+            map[Operation.LSL] = LSL;
+            map[Operation.LSR] = LSR;
+            map[Operation.HALT] = HALT;
 
             return map;
         }

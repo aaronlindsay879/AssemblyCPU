@@ -85,42 +85,29 @@ namespace AssemblyCPU.Backend
                 else
                     parts = splitLine[1].Trim().Split(' ');
 
-                if (!Enum.TryParse(typeof(Operations), parts[0], out var operation))
+                if (!Enum.TryParse(typeof(Operation), parts[0], out var operation))
                     throw new Exception($"{index}, {parts[0]} wrong");
 
                 Operand[] operands = new Operand[0];
                 Addressing addressing = Addressing.Direct;
-
-                switch ((Operations)operation)
+                
+                switch (Operations.GetCategory((Operation)operation))
                 {
-                    case Operations.LDR:
-                    case Operations.STR:
+                    case "Memory":
                         operands = ParseOperands(parts[1]);
                         addressing = Addressing.Immediate;
 
                         break;
 
-                    case Operations.ADD:
-                    case Operations.SUB:
-                    case Operations.MOV:
-                    case Operations.CMP:
-                    case Operations.AND:
-                    case Operations.ORR:
-                    case Operations.EOR:
-                    case Operations.MVN:
-                    case Operations.LSL:
-                    case Operations.LSR:
+                    case "Arithmetic":
+                    case "Bitwise":
                         operands = ParseOperands(parts[1]);
                         string lastOperand = parts[1].Split(',').Last();
                         addressing = (FindType(lastOperand) == OperandType.Value) ? Addressing.Immediate : Addressing.Direct;
 
                         break;
 
-                    case Operations.B:
-                    case Operations.BEQ:
-                    case Operations.BNE:
-                    case Operations.BGT:
-                    case Operations.BLT:
+                    case "Branch":
                         int labelLine = Array.IndexOf(labels, parts[1]);
                         operands = new Operand[] { new Operand(labelLine) };
                         addressing = Addressing.Immediate;
@@ -128,7 +115,7 @@ namespace AssemblyCPU.Backend
                         break;
                 }
 
-                Opcode opcode = new Opcode((Operations)operation, addressing);
+                Opcode opcode = new Opcode((Operation)operation, addressing);
                 Command command = new Command(opcode, operands);
 
                 instance.GeneralReg["RAM"].SetData(command.ToValue(), index);
