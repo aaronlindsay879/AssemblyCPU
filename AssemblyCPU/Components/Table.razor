@@ -1,0 +1,33 @@
+﻿<h3>@Name</h3>
+
+<table class="table-auto" style="width:100%">
+    @for (int row = 0; row < Rows; row++)
+    {
+        <tr>
+            @for (int col = 0; col < Cols; col++)
+            {
+                <td class="border px-2 py-1" title="@GetTooltip(row, col)">
+                    <center>
+                        <b>@GetIndex(row, col)</b>
+                        <p>@GetValue(row, col)</p>
+                    </center>
+                </td>
+            }
+        </tr>
+    }
+</table>
+
+@code {
+    [Parameter] public string Name { get; set; }
+    [Parameter] public int Rows { get; set; }
+    [Parameter] public int Cols { get; set; }
+
+
+    [Parameter] public Func<int, int, object> Tooltip { get; set; }
+    [Parameter] public Func<int, int, object> Index { get; set; }
+    [Parameter] public Func<int, int, object> Value { get; set; }
+
+    private string GetTooltip(int row, int col) => Tooltip?.Invoke(row, col).ToString();
+    private string GetIndex(int row, int col) => Index?.Invoke(row, col).ToString();
+    private string GetValue(int row, int col) => Value?.Invoke(row, col).ToString();
+}

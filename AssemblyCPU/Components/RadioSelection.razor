@@ -1,0 +1,36 @@
+﻿@foreach (var item in Items)
+{
+    <div>
+        <input type="radio" name="@Name" id="@(Name)-@(item)" value="@item" @onchange="RadioChanged" checked=@(RadioValue.Equals(item,StringComparison.OrdinalIgnoreCase)) />
+        <label for="@(Name)-@(item)">@item</label>
+    </div>
+}
+
+@code {
+    [Parameter] public string[] Items { get; set; }
+    [Parameter] public string DefaultItem { get; set; }
+    [Parameter] public string Name { get; set; }
+
+    [Parameter] public EventCallback<string> OnRadioChanged { get; set; }
+
+    public string RadioValue;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        RadioValue = DefaultItem;
+
+        //Create a fake event in order to force default item to be correctly selected
+        ChangeEventArgs args = new ChangeEventArgs();
+        args.Value = DefaultItem;
+        RadioChanged(args);
+    }
+
+    public async void RadioChanged(ChangeEventArgs args)
+    {
+        RadioValue = args.Value.ToString();
+
+        await OnRadioChanged.InvokeAsync(RadioValue);
+    }
+}

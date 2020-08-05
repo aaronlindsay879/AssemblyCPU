@@ -1,32 +1,9 @@
 ﻿@using Backend 
 
 <center>
-    <h3>@Name</h3>
+    <Table Name="@Name" Rows="@Rows" Cols="@Cols" Tooltip="@GetTooltip" Index="@GetName" Value="@GetValue" />
 
-    <table class="table-auto" style="width:100%">
-        @for (int row = 0; row < Rows; row++)
-        {
-            <tr>
-                @for (int col = 0; col < Cols; col++)
-                {
-                    <td class="border px-2 py-1" title="@GetTooltip(row, col)">
-                        <center>
-                            <b>@GetName(row, col)</b>
-                            <p>@GetValue(row, col)</p>
-                        </center>
-                    </td>
-                }
-            </tr>
-        }
-    </table>
-
-    @foreach (var item in new string[] { "binary", "decimal", "hex" })
-    {
-        <div>
-            <input type="radio" name="@Name" id="@(Name)-@(item)" value="@item" @onchange="RadioSelection" checked=@(RadioValue.Equals(item,StringComparison.OrdinalIgnoreCase)) />
-            <label for="@(Name)-@(item)">@item</label>
-        </div>
-    }
+    <RadioSelection Name="@Name" DefaultItem="@DefaultItem" Items="@Items" OnRadioChanged="@OnRadioChanged" />
 </center>
 
 @code {
@@ -36,7 +13,20 @@
     [Parameter] public int Rows { get; set; }
     [Parameter] public int Cols { get; set; }
 
-    public string RadioValue = "binary";
+    [Parameter] public string DefaultItem { get; set; } = "binary";
+    [Parameter] public string[] Items { get; set; } = new[] { "binary", "decimal", "hex" };
+
+    private string _radioValue;
+
+    public void OnRadioChanged(string value)
+    {
+        _radioValue = value;
+    }
+
+    public string GetName(int row, int col)
+    {
+        return Registers.Keys.ToArray()[(row * Cols) + col];
+    }
 
     public string GetTooltip(int row, int col)
     {
@@ -45,16 +35,11 @@
         return Registers[name].Tooltip;
     }
 
-    public string GetName(int row, int col)
-    {
-        return Registers.Keys.ToArray()[(row * Cols) + col];
-    }
-
     public string GetValue(int row, int col)
     {
         //Find name and calculate base based upon selected value
         string name = GetName(row, col);
-        int b = RadioValue switch
+        int b = _radioValue switch
         {
             "binary" => 2,
             "decimal" => 10,
@@ -85,10 +70,5 @@
         }
 
         return output.ToUpper();
-    }
-
-    void RadioSelection(ChangeEventArgs args)
-    {
-        RadioValue = args.Value.ToString();
     }
 }

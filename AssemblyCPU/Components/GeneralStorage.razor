@@ -1,32 +1,9 @@
 ﻿@using Backend 
 
 <center>
-    <h3>@Name</h3>
+    <Table Name="@Name" Rows="@Rows" Cols="@Cols" Index="@GetId" Value="@GetValue"/>
 
-    <table class="table-auto" style="width: 100%">
-        @for (int row = 0; row < Rows; row++)
-        {
-            <tr>
-                @for (int col = 0; col < Cols; col++)
-                {
-                    <td class="border px-2 py-1">
-                        <center>
-                            <b>@GetId(row, col)</b>
-                            <p>@GetValue(row, col)</p>
-                        </center>
-                    </td>
-                }
-            </tr>
-        }
-    </table>
-
-    @foreach (var item in new string[] { "binary", "decimal", "hex" })
-    {
-        <div>
-            <input type="radio" name="@Name" id="@(Name)-@(item)" value="@item" @onchange="RadioSelection" checked=@(RadioValue.Equals(item,StringComparison.OrdinalIgnoreCase)) />
-            <label for="@(Name)-@(item)">@item</label>
-        </div>
-    }
+    <RadioSelection Name="@Name" DefaultItem="@DefaultItem" Items="@Items" OnRadioChanged="@OnRadioChanged" />
 </center>
 
 @code {
@@ -36,9 +13,17 @@
     [Parameter] public int Rows { get; set; }
     [Parameter] public int Cols { get; set; }
 
-    public string RadioValue = "hex";
+    [Parameter] public string DefaultItem { get; set; } = "hex";
+    [Parameter] public string[] Items { get; set; } = new[] { "binary", "decimal", "hex" };
 
-    public int GetId(int row, int col)
+    private string _radioValue;
+
+    public void OnRadioChanged(string value)
+    {
+        _radioValue = value;
+    }
+
+    public object GetId(int row, int col)
     {
         return (row * Cols) + col;
     }
@@ -46,8 +31,8 @@
     public string GetValue(int row, int col)
     {
         //Find id and calculate base based upon selected value
-        int id = GetId(row, col);
-        int b = RadioValue switch
+        int id = Convert.ToInt32(GetId(row, col));
+        int b = _radioValue switch
         {
             "binary" => 2,
             "decimal" => 10,
@@ -78,10 +63,5 @@
         }
 
         return output.ToUpper();
-    }
-
-    void RadioSelection(ChangeEventArgs args)
-    {
-        RadioValue = args.Value.ToString();
     }
 }
