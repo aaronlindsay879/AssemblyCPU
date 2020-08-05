@@ -16,7 +16,7 @@
     <div>
         <div title="The speed at which to run programs" style="display: inline">
             <span>Speed: </span>
-            <input type="number" step="1" min="1" max="10" style="width: 10%;" @bind-value="Speed" @bind-value:event="onchange" />
+            <input type="number" step="1" min="1" max="10" style="width: 15%;" @bind-value="Speed" @bind-value:event="onchange" />
         </div>
         <p title="The current instruction being worked upon">Current instruction (MAR): @cpu.Instance.SpecialReg["MAR"].Data</p>
         <p title="The next CPU state to be worked upon">Next state: @cpu.State</p>
