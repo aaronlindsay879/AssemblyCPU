@@ -23,7 +23,17 @@ gulp.task('css:prod', () => {
             require('tailwindcss'),
             require('autoprefixer')
         ]))
-        .pipe(purgecss({ content: ['**/*.html', '**/*.razor'], options: { whitelist: ['hover:bg-blue-700']} }))
+        .pipe(purgecss({
+            content: ['**/*.html', '**/*.razor'],
+            extractors: [
+                {
+                    extractor: content => {
+                            return content.match(/[A-z0-9-:\/]+/g) || [];
+                    },
+                    extensions: ['razor', 'html', 'css']
+                }
+            ]
+            }))
         .pipe(cleanCSS({ level: 2 }))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./wwwroot/css/'));
