@@ -90,18 +90,22 @@
     void Compile()
     {
         Backend.Program.CompileProgram(cpu.Instance, Content);
+
+        //Force redraw of contents
         StateHasChanged();
     }
 
     void Pulse()
     {
         cpu.Pulse();
+
         StateHasChanged();
     }
 
     void Cycle()
     {
         cpu.Cycle();
+
         StateHasChanged();
     }
 
@@ -119,6 +123,8 @@
             RunText = "Run";
             _timer.Enabled = false;
         }
+
+        StateHasChanged();
     }
 
     void Reset()
@@ -126,5 +132,7 @@
         RunText = "Run";
         _timer.Enabled = false;
         cpu.RegenerateInstance();
+
+        StateHasChanged();
     }
 }
