@@ -23,7 +23,7 @@ gulp.task('css:prod', () => {
             require('tailwindcss'),
             require('autoprefixer')
         ]))
-        .pipe(purgecss({ content: ['**/*.html', '**/*.razor'] }))
+        .pipe(purgecss({ content: ['**/*.html', '**/*.razor'], options: { whitelist: ['hover:bg-blue-700']} }))
         .pipe(cleanCSS({ level: 2 }))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./wwwroot/css/'));
