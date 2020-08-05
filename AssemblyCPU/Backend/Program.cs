@@ -26,6 +26,25 @@ namespace AssemblyCPU.Backend
             return OperandType.Value;
         }
 
+        private static int ParseValue(string value)
+        {
+            int num;
+
+            //If value starts with a non numeric char, remove it
+            if (FindType(value) != OperandType.Memory)
+                value = value.Remove(0, 1);
+
+            //If value is either less than 2 chars long or isn't a binary value (such as 0b001)
+            if (value.Length < 2 || value[1] != 'b')
+                //Remove first char ('#') and parse to int
+                num = (int)new Int32Converter().ConvertFromString(value);
+            else
+                //Otherwise remove first 3 chars (0b or 0x) and parse to int
+                num = Convert.ToInt32(value.Remove(0, 2), 2);
+
+            return num;
+        }
+
         public static Operand[] ParseOperands(string operands)
         {
             //Split operands into array
@@ -36,38 +55,7 @@ namespace AssemblyCPU.Backend
 
             //For each operand part (with index)
             foreach (var (part, index) in parts.Select((x, i) => (x, i)))
-            {
-                int num;
-
-                switch (FindType(part))
-                {
-                    case OperandType.Register:
-                        //If operand is a register, remove first char ('R') and parse as number
-                        int.TryParse(part.Remove(0, 1), out num);
-
-                        //Set output at given index to operand with parsed value
-                        output[index] = new Operand(num);
-                        break;
-
-                    case OperandType.Value:
-                        //If operand is a value which is either less than 3 chars long or isn't a binary value (such as #0b001)
-                        if (part.Length < 3 || part[2] != 'b')
-                            //Remove first char ('#') and parse to int
-                            num = (int)new Int32Converter().ConvertFromString(part.Remove(0, 1));
-                        else
-                            //Otherwise remove first 3 chars and parse to int
-                            num = Convert.ToInt32(part.Remove(0, 3), 2);
-
-                        output[index] = new Operand(num);
-                        break;
-
-                    case OperandType.Memory:
-                        //If operand is memory address, just parse directly as int
-                        int.TryParse(part, out num);
-                        output[index] = new Operand(num);
-                        break;
-                }
-            }
+                output[index] = new Operand(ParseValue(part));
 
             return output;
         }
