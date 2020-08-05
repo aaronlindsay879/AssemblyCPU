@@ -27,6 +27,14 @@
     </ol>
 
     <h2 class="font-bold text-lg" style="margin-top: 50px;">Execution</h2>
+    Execution follows 5 steps, which fall into 3 different categories. Steps 1, 2 and 3 are in the fetch category, while 4 is decode and 5 is execute.
+    <ol class="list-decimal">
+        <li>The address of the next instruction to be executed (which is saved in the PC) is moved to the MAR</li>
+        <li>The instruction held at that address is fetched and place in the MBR, and the PC is incremented</li>
+        <li>The contents of the MBR are copied to the CIR</li>
+        <li>The instruction held in the CIR is decoded, by splitting it up into 2 char hex chunks (essentially the opposite of the compilation step above)</li>
+        <li>The instruction is executed</li>
+    </ol>
 </div>
 
 <div style="display: inline-block; width: 45%; float: right;">
