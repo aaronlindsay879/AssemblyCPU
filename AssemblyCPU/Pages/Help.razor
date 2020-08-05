@@ -1,5 +1,36 @@
 ﻿@page "/help"
 
-@code {
+<style>
+    ol > li {
+        margin-left: 15px;
+    }
+</style>
 
-}
+<div style="display: inline-block; width: 45%; float: left">
+    <center>
+        <h1 class="font-bold text-xl">CPU</h1>
+    </center>
+
+    <h2 class="font-bold text-lg">Compilation</h2>
+    During compilation, the following steps are carried out for each instruction
+    <ol class="list-decimal">
+        <li>Split the instruction into an opcode and an operand, where the opcode is the command itself (such as ADD) and the operand is an array of arguments</li>
+        <li>
+            The opcode is converted into a hex value
+            <ol class="list-disc">
+                <li>For most opcodes, it is converted directly into a hex value (such as LDR -> 02)</li>
+                <li>Opcodes which can take different operands (such as ADD taking a register or value) have different hex values depending on the operands</li>
+            </ol>
+        </li>
+        <li>The operands are then each converted to a hex value depending on their value (so R9 -> 09 as the value is 9)</li>
+        <li>These values are concatenated to form a value such as 02 09 08, which is then saved into the memory slot corresponding to the command (so command 2 -> memory slot 2)</li>
+    </ol>
+
+    <h2 class="font-bold text-lg" style="margin-top: 50px;">Execution</h2>
+</div>
+
+<div style="display: inline-block; width: 45%; float: right;">
+    <center>
+        <h1 class="font-bold text-xl">Instructions</h1>
+    </center>
+</div>
