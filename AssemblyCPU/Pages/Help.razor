@@ -1,12 +1,12 @@
 ﻿@page "/help"
 
 <style>
-    ol > li {
-        margin-left: 15px;
+    ol,ul > li {
+        margin-left: 30px;
     }
 </style>
 
-<div style="display: inline-block; width: 45%; float: left">
+<div style="display: inline-block; width: 49%; float: left">
     <center>
         <h1 class="font-bold text-xl">CPU</h1>
     </center>
@@ -14,7 +14,7 @@
     <h2 class="font-bold text-lg">Compilation</h2>
     During compilation, the following steps are carried out for each instruction
     <ol class="list-decimal">
-        <li>Split the instruction into an opcode and an operand, where the opcode is the command itself (such as ADD) and the operand is an array of arguments</li>
+        <li>Split the instruction into an opcode and an operand</li>
         <li>
             The opcode is converted into a hex value
             <ol class="list-disc">
@@ -37,8 +37,27 @@
     </ol>
 </div>
 
-<div style="display: inline-block; width: 45%; float: right;">
+<div style="display: inline-block; width: 49%; float: right;">
     <center>
-        <h1 class="font-bold text-xl">Instructions</h1>
+        <h1 class="font-bold text-xl">Terminology</h1>
     </center>
+    <ul class="list-disc">
+        <li>
+            Instructions 
+            <ul class="list-disc">
+                <li>Opcode - A value tellin the CPU what to do. It is composed of an operation (such as ADD), and an addressing mode which gives information about the operand - whether the last value is a register, or a value</li>
+                <li>Operand - A list of arguments corresponding to a command, which gives information to the CPU. An operand can contain multiple references to either memory locations, registers, or direct values</li>
+            </ul>
+        </li>
+        <li>
+            CPU
+            <ul class="list-disc">
+                <li>MBR - Memory Buffer Register, holds data moving between the CPU and memory</li>
+                <li>MAR - Memory Address Register, holds the memory address of data to be accessed</li>
+                <li>CIR - Current Instruction Register, holds the current instruction being worked upon</li>
+                <li>SR - Status Register, holds data pertaining to the current state of the CPU (such as whether the last operation resulted in an overflow)</li>
+                <li>PC - Program Coutner, holds the address of the next insrtuction to be fetched</li>
+            </ul>
+        </li>
+    </ul>
 </div>
