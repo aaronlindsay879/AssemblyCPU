@@ -1,55 +1,25 @@
 ﻿@page "/"
-@using Backend
-@using Components
+@using AssemblyCPU.Backend
+@using AssemblyCPU.Components 
 
 <div style="float: left; margin-right: 10px; width: auto;">
-    <table class="table-auto">
-        <tr>
-            <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Compile"
-                        title="Compile the program into memory">Compile</button>
-            </td>
-            <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Pulse"
-                        title="Executes one CPU state">Pulse</button>
-            </td>
-            <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Cycle"
-                        title="Executes a full command">Cycle</button>
-            </td>
-            <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="RunToggle"
-                        title="Run the program">@RunText</button>
-            </td>
-            <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Reset"
-                        title="Clear all memory and registers">Reset</button>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <span title="The current instruction being worked upon">Current instruction (MAR): @cpu.Instance.SpecialReg["MAR"].Data</span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <span title="The next CPU state to be worked upon">Next state: @cpu.State</span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <span title="Whether the CPU has is in a halted state, where it will no longer execute instructions">Is halted: @cpu.Instance.Halted</span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <div title="The speed at which to run programs" style="display: inline">
-                    <span>Speed: </span>
-                    <input type="number" step="1" min="1" max="10" style="width: 10%;" @bind-value="Speed" @bind-value:event="onchange" />
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div style="display: block">
+        <FormattedButton Tooltip="Compile the program into memory" Content="Compile" Click="@Compile" />
+        <FormattedButton Tooltip="Executes one CPU state" Content="Pulse" Click="@Pulse" />
+        <FormattedButton Tooltip="Executes a full command" Content="Cycle" Click="@Cycle" />
+        <FormattedButton Tooltip="Run the program" Content="@RunText" Click="@RunToggle" />
+        <FormattedButton Tooltip="Clear all data storage, and stop execution" Content="Reset" Click="@Reset" />
+    </div>
+
+    <div style="display: ">
+        <p title="The current instruction being worked upon">Current instruction (MAR): @cpu.Instance.SpecialReg["MAR"].Data</p>
+        <p title="The next CPU state to be worked upon">Next state: @cpu.State</p>
+        <p title="Whether the CPU has is in a halted state, where it will no longer execute instructions">Is halted: @cpu.Instance.Halted</p>
+        <div title="The speed at which to run programs" style="display: inline">
+            <span>Speed: </span>
+            <input type="number" step="1" min="1" max="10" style="width: 10%;" @bind-value="Speed" @bind-value:event="onchange" />
+        </div>
+    </div>       
 
     <textarea id="code" class="border-black border-2" style="width: 100%; height: 600px;"
               @bind-value="Content" @bind-value:event="oninput" spellcheck="false" />
@@ -57,15 +27,15 @@
 
 
 <div style="display: inline-block; margin-right: 10px;">
-    <AssemblyCPU.Components.GeneralStorage Cols="10" Rows="10" Name="RAM" Data="@cpu.Instance.GeneralReg["RAM"]" />
+    <GeneralStorage Cols="10" Rows="10" Name="RAM" Data="@cpu.Instance.GeneralReg["RAM"]" />
 </div>
 
 <div style="display: inline-block; margin-right: 10px;">
-    <AssemblyCPU.Components.GeneralStorage Cols="1" Rows="8" Name="General Registers" Data="@cpu.Instance.GeneralReg["Registers"]" />
+    <GeneralStorage Cols="1" Rows="8" Name="General Registers" Data="@cpu.Instance.GeneralReg["Registers"]" />
 </div>
 
 <div style="display: inline-block; margin-right: 10px;">
-    <AssemblyCPU.Components.SpecialStorage Cols="1" Rows="5" Name="Special Registers" Registers="@cpu.Instance.SpecialReg" />
+    <SpecialStorage Cols="1" Rows="5" Name="Special Registers" Registers="@cpu.Instance.SpecialReg" />
 </div>
 
 @code  {
@@ -117,23 +87,25 @@
         _timer.AutoReset = true;
     }
 
-    void Compile(EventArgs e)
+    void Compile()
     {
         Backend.Program.CompileProgram(cpu.Instance, Content);
+        StateHasChanged();
     }
 
-    void Pulse(EventArgs e)
+    void Pulse()
     {
         cpu.Pulse();
+        StateHasChanged();
     }
 
-    void Cycle(EventArgs e)
+    void Cycle()
     {
         cpu.Cycle();
         StateHasChanged();
     }
 
-    void RunToggle(EventArgs e)
+    void RunToggle()
     {
         if (RunText == "Run")
         {
@@ -149,7 +121,7 @@
         }
     }
 
-    void Reset(EventArgs e)
+    void Reset()
     {
         RunText = "Run";
         _timer.Enabled = false;

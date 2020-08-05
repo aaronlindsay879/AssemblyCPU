@@ -1,0 +1,13 @@
+﻿<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="Onclick"
+        title="@Tooltip">
+    @Content
+</button>
+
+@code {
+    [Parameter] public string Tooltip { get; set; }
+    [Parameter] public string Content { get; set; }
+
+    [Parameter] public Action Click { get; set; }
+
+    private void Onclick() => Click?.Invoke();
+}
