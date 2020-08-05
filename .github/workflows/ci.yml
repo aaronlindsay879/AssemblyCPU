@@ -15,6 +15,18 @@ jobs:
           with:
             dotnet-version: 3.1.x
 
+        - name: Use Node.js
+          uses: actions/setup-node@v2.1.1
+          
+        - name: Install dependencies
+          run: npm install
+          
+        - name: css minify
+          run: gulp
+        
+        - name: minify css
+          run: gulp --gulpfile AssemblyCPU/gulpfile.js css:prod
+
         # Run tests
         - name: Test
           run: dotnet test
