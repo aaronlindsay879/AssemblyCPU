@@ -20,6 +20,9 @@ jobs:
           
         - name: Install dependencies
           run: npm --prefix ./AssemblyCPU install
+        
+        - name: install gulp
+          run: npm install gulp-cli -g
           
         - name: css minify
           run: gulp
