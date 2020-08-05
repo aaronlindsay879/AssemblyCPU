@@ -36,10 +36,9 @@ namespace AssemblyCPU.Backend
 
             //If value is either less than 2 chars long or isn't a binary value (such as 0b001)
             if (value.Length < 2 || value[1] != 'b')
-                //Remove first char ('#') and parse to int
                 num = (int)new Int32Converter().ConvertFromString(value);
             else
-                //Otherwise remove first 3 chars (0b or 0x) and parse to int
+                //Otherwise remove first 2 chars (0b) and parse to int
                 num = Convert.ToInt32(value.Remove(0, 2), 2);
 
             return num;
@@ -102,7 +101,7 @@ namespace AssemblyCPU.Backend
                 Operand[] operands = new Operand[0];
                 Addressing addressing = Addressing.Direct;
 
-                switch (Operations.GetCategory((Operation)operation))
+                switch (((Operation)operation).GetCategory())
                 {
                     case "Memory":
                         //If the operation is memory, parse the operands and set addressing mode to immediate
