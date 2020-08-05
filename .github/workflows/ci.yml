@@ -22,10 +22,7 @@ jobs:
           run: npm --prefix ./AssemblyCPU install
         
         - name: install gulp
-          run: npm install gulp-cli -g
-          
-        - name: css minify
-          run: gulp
+          run: npm install gulp-cli
         
         - name: minify css
           run: gulp --gulpfile AssemblyCPU/gulpfile.js css:prod
