@@ -3,22 +3,24 @@
 @using AssemblyCPU.Components 
 
 <div style="float: left; margin-right: 10px; width: auto;">
-    <div style="display: block">
+    <div style="display: block" class="py-2">
         <FormattedButton Tooltip="Compile the program into memory" Content="Compile" Click="@Compile" />
         <FormattedButton Tooltip="Executes one CPU state" Content="Pulse" Click="@Pulse" />
         <FormattedButton Tooltip="Executes a full command" Content="Cycle" Click="@Cycle" />
+    </div>
+    <div style="display: block">
         <FormattedButton Tooltip="Run the program" Content="@RunText" Click="@RunToggle" />
         <FormattedButton Tooltip="Clear all data storage, and stop execution" Content="Reset" Click="@Reset" />
     </div>
 
-    <div style="display: ">
-        <p title="The current instruction being worked upon">Current instruction (MAR): @cpu.Instance.SpecialReg["MAR"].Data</p>
-        <p title="The next CPU state to be worked upon">Next state: @cpu.State</p>
-        <p title="Whether the CPU has is in a halted state, where it will no longer execute instructions">Is halted: @cpu.Instance.Halted</p>
+    <div>
         <div title="The speed at which to run programs" style="display: inline">
             <span>Speed: </span>
             <input type="number" step="1" min="1" max="10" style="width: 10%;" @bind-value="Speed" @bind-value:event="onchange" />
         </div>
+        <p title="The current instruction being worked upon">Current instruction (MAR): @cpu.Instance.SpecialReg["MAR"].Data</p>
+        <p title="The next CPU state to be worked upon">Next state: @cpu.State</p>
+        <p title="Whether the CPU has is in a halted state, where it will no longer execute instructions">Is halted: @cpu.Instance.Halted</p>
     </div>       
 
     <textarea id="code" class="border-black border-2" style="width: 100%; height: 600px;"
