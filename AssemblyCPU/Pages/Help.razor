@@ -1,7 +1,7 @@
 ﻿@page "/help"
 
 <style>
-    ol,ul > li {
+    ol#indent,ul#indent > li {
         margin-left: 30px;
     }
 </style>
@@ -13,11 +13,11 @@
 
     <h2 class="font-bold text-lg">Compilation</h2>
     During compilation, the following steps are carried out for each instruction
-    <ol class="list-decimal">
+    <ol class="list-decimal" id="indent">
         <li>Split the instruction into an opcode and an operand</li>
         <li>
             The opcode is converted into a hex value
-            <ol class="list-disc">
+            <ol class="list-disc" id="indent">
                 <li>For most opcodes, it is converted directly into a hex value (such as LDR -> 02)</li>
                 <li>Opcodes which can take different operands (such as ADD taking a register or value) have different hex values depending on the operands</li>
             </ol>
@@ -28,7 +28,7 @@
 
     <h2 class="font-bold text-lg" style="margin-top: 50px;">Execution</h2>
     Execution follows 5 steps, which fall into 3 different categories. Steps 1, 2 and 3 are in the fetch category, while 4 is decode and 5 is execute.
-    <ol class="list-decimal">
+    <ol class="list-decimal" id="indent">
         <li>The address of the next instruction to be executed (which is saved in the PC) is moved to the MAR</li>
         <li>The instruction held at that address is fetched and place in the MBR, and the PC is incremented</li>
         <li>The contents of the MBR are copied to the CIR</li>
@@ -41,22 +41,22 @@
     <center>
         <h1 class="font-bold text-xl">Terminology</h1>
     </center>
-    <ul class="list-disc">
+    <ul class="list-disc" id="indent">
         <li>
-            Instructions 
-            <ul class="list-disc">
+            Instructions
+            <ul class="list-disc" id="indent">
                 <li>Opcode - A value telling the CPU what to do. It is composed of an operation (such as ADD), and an addressing mode which gives information about the operand - whether the last value is a register, or a value</li>
                 <li>Operand - A list of arguments corresponding to a command, which gives information to the CPU. An operand can contain multiple references to either memory locations, registers, or direct values</li>
             </ul>
         </li>
         <li>
             CPU
-            <ul class="list-disc">
+            <ul class="list-disc" id="indent">
                 <li>MBR - Memory Buffer Register, holds data moving between the CPU and memory</li>
                 <li>MAR - Memory Address Register, holds the memory address of data to be accessed</li>
                 <li>CIR - Current Instruction Register, holds the current instruction being worked upon</li>
                 <li>SR - Status Register, holds data pertaining to the current state of the CPU (such as whether the last operation resulted in an overflow)</li>
-                <li>PC - Program Coutner, holds the address of the next instruction to be fetched</li>
+                <li>PC - Program Counter, holds the address of the next instruction to be fetched</li>
             </ul>
         </li>
     </ul>
