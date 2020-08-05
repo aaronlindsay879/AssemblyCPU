@@ -64,6 +64,9 @@ namespace AssemblyCPU.Backend
             //Split program into lines
             string[] lines = program.Split('\n');
 
+            //Strip all newlines after last command
+            lines = lines.Reverse().SkipWhile(x => x == string.Empty).Reverse().ToArray();
+
             //Generate labels array with same length as program lines
             string[] labels = new string[lines.Length];
             //For each line of code (with index)
@@ -138,6 +141,16 @@ namespace AssemblyCPU.Backend
 
                 //Set the memory to the command's value
                 instance.GeneralReg["RAM"].SetData(command.ToValue(), index);
+
+                //If this is the last command and is not halt, insert a halt instruction in next memory address
+                Console.WriteLine($"{index}, {lines.Length}");
+                if (index == (lines.Length - 1) && opcode.Operation != Operation.HALT)
+                {
+                    Opcode opcodeHalt = new Opcode(Operation.HALT, Addressing.Direct);
+                    Command commandHalt = new Command(opcodeHalt, new Operand[0]);
+
+                    instance.GeneralReg["RAM"].SetData(commandHalt.ToValue(), index + 1);
+                }
             }
         }
     }
